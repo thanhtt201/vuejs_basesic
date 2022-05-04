@@ -24,6 +24,9 @@
         .blue{
             background-color: blue;
         }
+        .menu{
+            margin: 10px 100px;
+        }
     </style>
 </head>
 <body>
@@ -49,6 +52,27 @@
             <p v-if="type === 1">If ...........</p>
             <p v-else-if="type === 2">Else If .......</p>
             <p v-else>Else .........</p>
+            <!-- thẻ template dùng để wrap element và ko sử dụng đc cho v-show-->
+            <!-- alternative với v-if và v-for-->
+            <template v-if="isColorRed">
+                <div>Menu 1</div>
+                <div>Menu 1</div>
+                <div>Menu 1</div>
+                <div>Menu 1</div>
+            </template>
+            <!-- v-show giống v-if nhưng chỉ ẩn element đi chứ ko xóa hẳn khỏi dom-->
+            <!-- duyệt array và duyệt object-->
+            <ul>
+                <li v-for="student in students">
+                    <div v-for="(value, key, index) in student">{{ key }} {{ value }} ({{ index }})</div>
+                </li>
+            </ul>
+        </div>
+        <div class="menu" @mousemove="showMenu()" @mouseleave="hideMenu()">
+            <span>Menu</span>
+            <ul v-if="isMenu">
+                <li v-for="(menu, index) in menus" :key="index"><a href="">{{ menu }}</a></li>
+            </ul>
         </div>
     </div>
 </body>
@@ -65,9 +89,16 @@
             a: 0,
             b: 0,
             count: 0,
-            isColorRed: false,
+            isColorRed: true,
             isColorGreen: 'green',
-            type: 2
+            type: 2,
+            menus: ['Home', 'About', 'Category', 'Product'],
+            isMenu: false,
+            students: [
+                { name: 'Thành', age: 21, class: 'CNTT'},
+                { name: 'Thắng', age: 20, class: 'CNTT'},
+                { name: 'Đạt', age: 25, class: 'CNTT'},
+            ]
         },
         // ui sẽ chỉ render những element khi gọi hàm trong computed làm thay đổi giá trị trong đối tượng data thôi
         // viết hàm trong computed sẽ tránh bị gọi lại hàm ko cần thiết
@@ -105,6 +136,12 @@
             keyUp: function(event){
                 console.log("methods")
                 alert(event.target.value)
+            },
+            showMenu: function(){
+                this.isMenu = true
+            },
+            hideMenu: function(){
+                this.isMenu = false
             }
         },
         // watch theo dõi sự thay đổi của biến đó để thực hiện 1 hành động nào đó tiếp theo
