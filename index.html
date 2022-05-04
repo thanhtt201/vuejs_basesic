@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="vue.js"></script>
+    <style>
+        .block1{
+            width: 50px;
+            height: 50px;
+            background-color: #ccc;
+            cursor: pointer;
+            display: inline-block;
+            margin: 5px;
+        }
+        .red{
+            background-color: red;
+        }
+        .green{
+            background-color: green;
+        }
+        .blue{
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div id="body">
+        <div>
+            <p v-on:mouseover.stop="dungToaDo($event)">Dừng sự kiện</p>
+            <input type="text" >
+            <p v-html="html"></p>
+            <h1 v-once>{{ title }} - {{ changeTitle() }}</h1>
+            <p>Tọa độ của chuột: {{ x }} / {{ y }}</p>
+            <input type="text" @keyup.enter="keyUp($event)">        <!-- event modify-->
+            <div>a: {{ increaseA }}</div>
+            <div>b: {{ increaseB }}</div>
+            <button @click="a++">Tăng a</button>
+            <button @click="b++">Tăng b</button>
+            <div>Count: {{ count }}</div>
+            <button @click="count++">Tăng a</button>
+            <div class="block1" @click="isColorRed = !isColorRed" :class="{ 'red' : isColorRed }"></div>
+            <div class="block1" :class="{ 'red' : isColorRed }"></div>
+            <div class="block1" :class="[isColorGreen, {red:isColorRed}]"></div>
+            <input type="text" v-model="isColorGreen">
+            <!-- v-if-->
+            <p v-if="type === 1">If ...........</p>
+            <p v-else-if="type === 2">Else If .......</p>
+            <p v-else>Else .........</p>
+        </div>
+    </div>
+</body>
+<script>
+    // cú phép shorthand: v-on = @, v-bind = :
+    // :class="[class1, class2]" ===> class="class1 class2"
+    new Vue({
+        el: "#body",
+        data: {
+            title: "Hello Trần Tiến Thành",
+            html: '<a href="http://facebook.com">My facebook</a>',
+            x: 0,
+            y: 0,
+            a: 0,
+            b: 0,
+            count: 0,
+            isColorRed: false,
+            isColorGreen: 'green',
+            type: 2
+        },
+        // ui sẽ chỉ render những element khi gọi hàm trong computed làm thay đổi giá trị trong đối tượng data thôi
+        // viết hàm trong computed sẽ tránh bị gọi lại hàm ko cần thiết
+        computed: {
+            increaseA: function(){
+                console.log("computed a")
+                return this.a
+            },
+            increaseB: function(){
+                console.log("computed b")
+                return this.b
+            },
+            divClasses: function(){
+                return {
+                    isColorRed: this.isColorRed,
+                    green: !this.isColorRed
+                }
+            }
+        },
+        methods: {
+            changeTitle: function(){
+                console.log("methods")
+                this.title = "Change title"
+                return this.title
+            },
+            tinhToaDo: function(event){
+                console.log("methods")
+                this.x = event.clientX
+                this.y = event.clientY
+            },
+            dungToaDo: function(event){
+                console.log("methods")
+                event.stopPropagation();
+            },
+            keyUp: function(event){
+                console.log("methods")
+                alert(event.target.value)
+            }
+        },
+        // watch theo dõi sự thay đổi của biến đó để thực hiện 1 hành động nào đó tiếp theo
+        watch: {
+            count: function(){
+                alert('Count: ' + this.count)
+            }
+        }
+    })
+</script>
+
+</html>
