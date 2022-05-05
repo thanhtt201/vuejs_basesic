@@ -74,11 +74,18 @@
                 <li v-for="(menu, index) in menus" :key="index"><a href="">{{ menu }}</a></li>
             </ul>
         </div>
+        <!-- $ref lấy thông tin của element-->
+        <p ref="elementRef" @click="showInfoRef()">Tìm hiểu $ref</p>
+        <hello></hello>
     </div>
 </body>
 <script>
     // cú phép shorthand: v-on = @, v-bind = :
     // :class="[class1, class2]" ===> class="class1 class2"
+    // có thể tạo nhiều instance cho khối element mà chúng ko ảnh hưởng đến nhau
+    Vue.component('hello', {
+        template: '<p>Hello world</p>'
+    })
     new Vue({
         el: "#body",
         data: {
@@ -142,6 +149,9 @@
             },
             hideMenu: function(){
                 this.isMenu = false
+            },
+            showInfoRef: function(){
+                console.log('ref', this.$refs.elementRef.outerHTML);
             }
         },
         // watch theo dõi sự thay đổi của biến đó để thực hiện 1 hành động nào đó tiếp theo

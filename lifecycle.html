@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{ title }}
+        <button @click="changeTitle()">Change title</button>
+        <button @click="destroyedEvent()">Destroyed</button>
+    </div>
+
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                title: "VueJs Instance Lifecycle"
+            },
+            // Hook khởi tạo component: beforeCreate() và created()
+            beforeCreate: function(){
+                // gọi đầu tiên trong lifecycle của vuejs
+                // Được gọi khi khởi tạo vue.js và trước khi thực hiện tiến trình observe Data và init Events
+                console.log("beforeCreated");
+            },
+            created: function(){
+                // đc gọi khi tiến trình observe Data và init Events hoàn thành
+                console.log("created");
+            },
+            // Hook chèn phần tử vào DOM: beforeMount() và mounted()
+            beforeMount: function(){
+                console.log("beforeMounted");
+            },
+            mounted: function(){
+                console.log("mounted");
+            },
+            // Hook re-render: beforeUpdate() và updated()
+            beforeUpdate: function(){
+                // đc gọi khi dữ liệu thay đổi, trc khi DOM đc vá
+                alert('hello')
+                console.log("beforeUpdated");
+            },
+            updated: function(){
+                // đc gọi khi data đc thay đổi
+                console.log("updated");
+            },
+            // Hook Destruction: beforeDestroye() và destroyed()
+            // Hook Destruction cho phép bạn thực hiện các hành đồng khi component được hủy bỏ. 
+            // Chúng được gọi khi component được remove khỏi DOM
+            beforeDestroye: function(){
+                // đc gọi ngay trc khi vue instance đc destroy
+                console.log("beforeDesstroyed");
+            },
+            destroyed: function(){
+                // đc gọi khi vue instance đã đc destroy
+                console.log("destroyed");
+            },
+            methods: {
+                changeTitle: function(){
+                    this.title = "Change title"
+                },
+                destroyedEvent: function(){
+                    this.$destroy()
+                }
+            }
+        })
+    </script>
+</body>
+</html>
